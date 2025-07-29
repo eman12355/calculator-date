@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Date Calculation Tool</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      /* Custom styles */
+      .gradient-bg {
+        background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+      }
+      .card {
+        transition: all 0.3s ease;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+      }
+      .date-input {
+        min-width: 200px;
+      }
+      .highlight {
+        animation: highlight 2s;
+      }
+      @keyframes highlight {
+        0% {
+          background-color: rgba(255, 255, 0, 0.5);
+        }
+        100% {
+          background-color: transparent;
+        }
+      }
+    </style>
+  </head>
+  <body class="min-h-screen gradient-bg text-white">
+    <div class="container mx-auto px-4 py-12">
+      <div class="text-center mb-12">
+        <h1 class="text-4xl font-bold mb-4">Advanced Date Calculator</h1>
+        <p class="text-xl opacity-90">
+          Calculate dates across three different scenarios with ease
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- Scenario 1 Card -->
+        <div
+          class="card bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-white border-opacity-20"
+        >
+          <h2 class="text-2xl font-semibold mb-3">Vacation Days Calculator</h2>
+          <p class="text-white text-opacity-80 mb-4">
+            Calculates total vacation days based on 30 days = 1 year
+          </p>
+
+          <div class="mb-4">
+            <label class="block mb-2">From Date:</label>
+            <div class="flex gap-2 mb-2">
+              <input
+                type="number"
+                id="scenario1-from-year"
+                placeholder="Year"
+                min="1900"
+                max="2100"
+                class="text-black rounded p-2 w-1/3"
+              />
+              <input
+                type="number"
+                id="scenario1-from-month"
+                placeholder="Month"
+                min="1"
+                max="12"
+                class="text-black rounded p-2 w-1/3"
+              />
+              <input
+                type="number"
+                id="scenario1-from-day"
+                placeholder="Day"
+                min="1"
+                max="31"
+                class="text-black rounded p-2 w-1/3"
+              />
+            </div>
+          </div>
+          <div class="mb-4">
+            <label class="block mb-2">To Date:</label>
+            <div class="flex gap-2 mb-2">
+              <input
+                type="number"
+                id="scenario1-to-year"
+                placeholder="Year"
+                min="1900"
+                max="2100"
+                class="text-black rounded p-2 w-1/3"
+              />
+              <input
+                type="number"
+                id="scenario1-to-month"
+                placeholder="Month"
+                min="1"
+                max="12"
+                class="text-black rounded p-2 w-1/3"
+              />
+              <input
+                type="number"
+                id="scenario1-to-day"
+                placeholder="Day"
+                min="1"
+                max="31"
+                class="text-black rounded p-2 w-1/3"
+              />
+            </div>
+          </div>
+
+          <button
+            onclick="calculateScenario1()"
+            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition"
+          >
+            Calculate Vacation Days
+          </button>
+
+          <div
+            id="result1"
+            class="mt-4 p-3 rounded bg-white bg-opacity-10 hidden"
+          >
+            <h3 class="font-semibold mb-2">Result:</h3>
+            <p id="result1-text"></p>
+          </div>
+        </div>
+
+        <!-- Scenario 2 Card -->
+        <div
+          class="card bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-white border-opacity-20"
+        >
+          <h2 class="text-2xl font-semibold mb-3">Duration Calculator</h2>
+          <p class="text-white text-opacity-80 mb-4">
+            Calculates years and months from start date to today
+          </p>
+
+          <div class="mb-4">
+            <label class="block mb-2">Start Date:</label>
+            <input
+              type="date"
+              id="scenario2-start"
+              class="date-input text-black rounded p-2 w-full"
+            />
+          </div>
+
+          <button
+            onclick="calculateScenario2()"
+            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition"
+          >
+            Calculate Duration
+          </button>
+
+          <div
+            id="result2"
+            class="mt-4 p-3 rounded bg-white bg-opacity-10 hidden"
+          >
+            <h3 class="font-semibold mb-2">Result:</h3>
+            <p id="result2-text"></p>
+          </div>
+        </div>
+
+        <!-- Scenario 3 Card -->
+        <div
+          class="card bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-white border-opacity-20"
+        >
+          <h2 class="text-2xl font-semibold mb-3">Days Calculator</h2>
+          <p class="text-white text-opacity-80 mb-4">
+            Calculates total days between two dates
+          </p>
+
+          <div class="mb-4">
+            <label class="block mb-2">From Date:</label>
+            <input
+              type="date"
+              id="scenario3-from"
+              class="date-input text-black rounded p-2 w-full"
+            />
+          </div>
+          <div class="mb-4">
+            <label class="block mb-2">To Date:</label>
+            <input
+              type="date"
+              id="scenario3-to"
+              class="date-input text-black rounded p-2 w-full"
+            />
+          </div>
+
+          <button
+            onclick="calculateScenario3()"
+            class="w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded transition"
+          >
+            Calculate Days
+          </button>
+
+          <div
+            id="result3"
+            class="mt-4 p-3 rounded bg-white bg-opacity-10 hidden"
+          >
+            <h3 class="font-semibold mb-2">Result:</h3>
+            <p id="result3-text"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pre-filled Example Section -->
+      <div
+        class="mt-12 bg-white bg-opacity-10 backdrop-filter backdrop-blur-lg rounded-xl p-6 border border-white border-opacity-20"
+      >
+        <h2 class="text-2xl font-semibold mb-4">Example Calculations</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="p-4 border border-white border-opacity-20 rounded">
+            <h3 class="font-semibold mb-2">Scenario 1 Example:</h3>
+            <p class="mb-2">2003.05.13 to 2025.07.24</p>
+            <button
+              onclick="runScenario1Example()"
+              class="text-sm bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded"
+            >
+              Run Example
+            </button>
+          </div>
+          <div class="p-4 border border-white border-opacity-20 rounded">
+            <h3 class="font-semibold mb-2">Scenario 2 Example:</h3>
+            <p class="mb-2">2015.01.21 to today</p>
+            <button
+              onclick="runScenario2Example()"
+              class="text-sm bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded"
+            >
+              Run Example
+            </button>
+          </div>
+          <div class="p-4 border border-white border-opacity-20 rounded">
+            <h3 class="font-semibold mb-2">Scenario 3 Example:</h3>
+            <p class="mb-2">2017.02.16 to 2025.05.17</p>
+            <button
+              onclick="runScenario3Example()"
+              class="text-sm bg-blue-500 hover:bg-blue-600 text-white py-1 px-3 rounded"
+            >
+              Run Example
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Calculate vacation days (1 year = 30 days)
+      function calculateScenario1() {
+        const fromYear = document.getElementById("scenario1-from-year").value;
+        const fromMonth = document.getElementById("scenario1-from-month").value;
+        const fromDay = document.getElementById("scenario1-from-day").value;
+        const toYear = document.getElementById("scenario1-to-year").value;
+        const toMonth = document.getElementById("scenario1-to-month").value;
+        const toDay = document.getElementById("scenario1-to-day").value;
+
+        if (
+          !fromYear ||
+          !fromMonth ||
+          !fromDay ||
+          !toYear ||
+          !toMonth ||
+          !toDay
+        ) {
+          alert("Please fill all date fields");
+          return;
+        }
+
+        const fromDate = new Date(fromYear, fromMonth - 1, fromDay);
+        const toDate = new Date(toYear, toMonth - 1, toDay);
+
+        if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+          alert("Please enter valid dates for both fields");
+          return;
+        }
+
+        // Check if toDate is after fromDate
+        if (toDate <= fromDate) {
+          alert('"To Date" must be after "From Date"');
+          return;
+        }
+
+        const diffTime = Math.abs(toDate - fromDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+        const vacationDays = (diffDays / 365.25) * 30;
+
+        const resultElement = document.getElementById("result1-text");
+        resultElement.innerHTML = `
+                Total days between dates: <strong>${diffDays}</strong><br>
+                Vacation days calculated: <strong>${
+                  Math.round(vacationDays * 100) / 100
+                }</strong>
+            `;
+
+        document.getElementById("result1").classList.remove("hidden");
+        document.getElementById("result1").classList.add("highlight");
+        setTimeout(() => {
+          document.getElementById("result1").classList.remove("highlight");
+        }, 2000);
+      }
+
+      // Calculate years and months from start date to today
+      function calculateScenario2() {
+        const startDate = new Date(
+          document.getElementById("scenario2-start").value
+        );
+        const today = new Date();
+
+        if (isNaN(startDate.getTime())) {
+          alert("Please enter a valid start date");
+          return;
+        }
+
+        if (startDate > today) {
+          alert("Start date must be before today");
+          return;
+        }
+
+        let years = today.getFullYear() - startDate.getFullYear();
+        let months = today.getMonth() - startDate.getMonth();
+
+        if (months < 0) {
+          years--;
+          months += 12;
+        }
+
+        // If the day of month is earlier in start date
+        if (today.getDate() < startDate.getDate()) {
+          months--;
+          if (months < 0) {
+            years--;
+            months += 12;
+          }
+        }
+
+        const resultElement = document.getElementById("result2-text");
+        resultElement.innerHTML = `
+                Duration: <strong>${years} years, ${months} months</strong><br>
+                Start date: <strong>${startDate.toLocaleDateString()}</strong><br>
+                Today: <strong>${today.toLocaleDateString()}</strong>
+            `;
+
+        document.getElementById("result2").classList.remove("hidden");
+        document.getElementById("result2").classList.add("highlight");
+        setTimeout(() => {
+          document.getElementById("result2").classList.remove("highlight");
+        }, 2000);
+      }
+
+      // Calculate days between two dates
+      function calculateScenario3() {
+        const fromDate = new Date(
+          document.getElementById("scenario3-from").value
+        );
+        const toDate = new Date(document.getElementById("scenario3-to").value);
+
+        if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+          alert("Please enter valid dates for both fields");
+          return;
+        }
+
+        if (toDate <= fromDate) {
+          alert('"To Date" must be after "From Date"');
+          return;
+        }
+
+        const diffTime = Math.abs(toDate - fromDate);
+        const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+        const resultElement = document.getElementById("result3-text");
+        resultElement.innerHTML = `
+                Total days between dates: <strong>${diffDays}</strong><br>
+                From: <strong>${fromDate.toLocaleDateString()}</strong><br>
+                To: <strong>${toDate.toLocaleDateString()}</strong>
+            `;
+
+        document.getElementById("result3").classList.remove("hidden");
+        document.getElementById("result3").classList.add("highlight");
+        setTimeout(() => {
+          document.getElementById("result3").classList.remove("highlight");
+        }, 2000);
+      }
+
+      // Example functions
+      function runScenario1Example() {
+        document.getElementById("scenario1-from").value = "2003-05-13";
+        document.getElementById("scenario1-to").value = "2025-07-24";
+        setTimeout(() => calculateScenario1(), 300); // Small delay to ensure values are set
+      }
+
+      function runScenario2Example() {
+        document.getElementById("scenario2-start").value = "2015-01-21";
+        setTimeout(() => calculateScenario2(), 300);
+      }
+
+      function runScenario3Example() {
+        document.getElementById("scenario3-from").value = "2017-02-16";
+        document.getElementById("scenario3-to").value = "2025-05-17";
+        setTimeout(() => calculateScenario3(), 300);
+      }
+    </script>
+  </body>
+</html>
